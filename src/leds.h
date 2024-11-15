@@ -15,6 +15,12 @@ class LED {
             digitalWrite(pin, LOW);         
         }
 
+        static void blink(int time_msec) {
+            digitalWrite(pin, HIGH); 
+            delay(time_msec);
+            digitalWrite(pin, LOW); 
+        }
+
         //метод для переключения состояния условиями
         static void switchCondition(int status) {
             if (status == 0) { LED::off(); }
