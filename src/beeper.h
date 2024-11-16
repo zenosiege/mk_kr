@@ -149,7 +149,7 @@ class Beeper {
             };
             
 
-            Beeper::playSomething(melody, 160, notes);
+            Beeper::playSomething(melody, 160);
         }
         //метод для переключения состояния условиями
         static void switchCondition(int status) {
