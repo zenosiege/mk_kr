@@ -1,6 +1,7 @@
 #include "buttons.h"
 #include "leds.h"
 #include "code_manipul.h"
+#include "beeper.h"
 
 constexpr char CODE[4] {'1', '3', '5', '4'};
 
@@ -24,7 +25,7 @@ using LED2 = LED<3>;
 using LED3 = LED<4>;
 using LED4 = LED<5>;
 
-
+using Beeper1 = Beeper<11>;
 
 
 
@@ -44,10 +45,13 @@ void setup() {
   LED3::init();
   LED4::init();
 
+  Beeper1::init();
+
   Serial.begin(115200);
 }
 
 void loop() {
+
   char inputCode[4] = {};
 
   // Ардуино будет ожидать, когда пользователь нажмёт ЧТО-ТО из кнопок
@@ -108,30 +112,59 @@ void loop() {
     LED2::off();
     LED3::off();
     LED4::off();
+    delay(400);
+    
+    //автозапирание
+
+    for (int i = 0; i < 8; i++) {
+      LED1::on();
+      delay(200);
+
+      LED1::off();
+      LED2::on();
+      delay(200);
+
+      LED2::off();
+      LED3::on();
+      delay(200);
+
+      LED3::off();
+      LED4::on();
+      delay(200);
+
+      LED4::off();
+      delay(200);
+    }
+
+    LED1::on();
+    LED2::on();
+    LED3::on();
+    LED4::on();
     delay(200);
+    LED1::off();
+    LED2::off();
+    LED3::off();
+    LED4::off();
+    delay(200);
+
+    // автозапирание закончилось
   }
   else {
     Serial.println("WRONG");
-    LED1::on();
-    LED2::on();
-    LED3::on();
-    LED4::on();
-    delay(200);
-    LED1::off();
-    LED2::off();
-    LED3::off();
-    LED4::off();
-    delay(200);
-    LED1::on();
-    LED2::on();
-    LED3::on();
-    LED4::on();
-    delay(200);
-    LED1::off();
-    LED2::off();
-    LED3::off();
-    LED4::off();
-    delay(200);
+    for (int i = 0; i < 2; i++) {
+      LED1::on();
+      LED2::on();
+      LED3::on();
+      LED4::on();
+      delay(200);
+      LED1::off();
+      LED2::off();
+      LED3::off();
+      LED4::off();
+      delay(200);
+    }
+    
+  
   }
   
               
