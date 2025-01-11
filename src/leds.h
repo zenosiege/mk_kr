@@ -1,13 +1,10 @@
 class LED {
     public:
-        LED() {
-            //Конструктор по умолчанию, требуется для создания массива
-        }
-
         LED(int pin_C) {
             pin = pin_C;
         }
-        
+
+        LED() = delete;
         
         void init() {
             pinMode(pin, OUTPUT);

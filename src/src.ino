@@ -3,29 +3,26 @@
 #include "code_manipul.h"
 #include "beeper.h"
 #include "SoftServo.h"
+#include "pitches.h"
 
 constexpr char CODE[4] {'1', '3', '5', '4'};
-
-//отдельно выведем список пинов, это потребуется, если контакты заменяются на другие
-constexpr unsigned int bPin[5] {6, 7, 8, 10, 12};
-
-//отдельно список символов, сответственно привязанных к кнопкам
-constexpr char bSymbol[5] {'1', '2', '3', '4', '5'};
 
 LED Builtin_LED(13);
 
 //кнопка - какой контакт + за ввод какого символа отвечает
-BUTTON Button1(bPin[0], bSymbol[0]);
-BUTTON Button2(bPin[1], bSymbol[1]);
-BUTTON Button3(bPin[2], bSymbol[2]);
-BUTTON Button4(bPin[3], bSymbol[3]);
-BUTTON Button5(bPin[4], bSymbol[4]);
+BUTTON Button1(6, '1');
+BUTTON Button2(7, '2');
+BUTTON Button3(8, '3');
+BUTTON Button4(10, '4');
+BUTTON Button5(12, '5');
 
+//светодиоды
 LED LED1(2);
 LED LED2(3);
 LED LED3(4);
 LED LED4(5);
 
+//бипер
 using Beeper1 = Beeper<11>;
 
 // переменные сигнализации. Да, глобальная, но иначе в loop она будет сбрасываться
@@ -73,11 +70,16 @@ void loop() {
   const int nLeds = 4; //сколько светодиодов используется. Для удобства
   LED ledArray[nLeds] = {LED1, LED2, LED3, LED4}; 
 
+  // Массив объектов класса кнопок, чтобы их передать в методы code_manipul.h
+  const int nButtons = 5; //сколько кнопок используется. Для удобства
+  BUTTON buttonArray[nButtons] = {Button1, Button2, Button3, Button4, Button5}; 
+
   // Набор кода
 
   for (int i = 0; i < 4; i++) {
-    inputCode[i] = codeCharSelect(bPin, bSymbol, 5);
+    inputCode[i] = codeCharSelect(buttonArray, 5);
     ledArray[i].on();
+    
   }
   
   //
@@ -104,7 +106,7 @@ void loop() {
     myservo.write(90);
 
     //ожидание нажатия любой кнопки для закрытия
-    int awaitingInput1 = awaitForInput(bPin, 5);
+    int awaitingInput1 = awaitForInput(buttonArray, 5);
 
     //запирание
     everyLED_On(ledArray, nLeds);
