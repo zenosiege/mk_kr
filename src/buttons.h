@@ -1,24 +1,27 @@
-template<int pin, char symbol>
 class BUTTON {
-
     public:
-        Button() = delete;
+        BUTTON (int pin_C, char symbol_C) {
+            pin = pin_C;
+            symbol = symbol_C;
+        }
+
+        BUTTON() = delete;
         
-        static void init() {
+        void init() {
             pinMode(pin, INPUT_PULLUP);
         }
         
-        static char getSymbol() {
+        char getSymbol() {
             return symbol;
         }
 
-        static char getPin() {
+        char getPin() {
             return pin;
         }
 
         //у Ардуино странная логика - отжатая кнопка возвращается "1", а нажатая "0"
         //этот метод инвертирует эту логику
-        static int statusCheck() {
+        int statusCheck() {
             if (digitalRead(pin) == 1) {
                 return 0;
             }
@@ -27,6 +30,8 @@ class BUTTON {
             }         
         }
     private:
+        int pin;
+        char symbol;
         
 };
 

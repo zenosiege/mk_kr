@@ -1,32 +1,50 @@
-template<int pin>
 class LED {
     public:
-        LED() = delete;
+        LED() {
+            //Конструктор по умолчанию, требуется для создания массива
+        }
+
+        LED(int pin_C) {
+            pin = pin_C;
+        }
         
-        static void init() {
+        
+        void init() {
             pinMode(pin, OUTPUT);
         }
         
-        static void on() {
+        void on() {
             digitalWrite(pin, HIGH);         
         }
 
-        static void off() {
+        void off() {
             digitalWrite(pin, LOW);         
         }
 
-        static void blink(int time_msec) {
+        void blink(int time_msec) {
             digitalWrite(pin, HIGH); 
             delay(time_msec);
             digitalWrite(pin, LOW); 
         }
 
         //метод для переключения состояния условиями
-        static void switchCondition(int status) {
-            if (status == 0) { LED::off(); }
-            else if (status == 1) { LED::on(); }
+        void switchCondition(int status) {
+            if (status == 0) { off(); }
+            else if (status == 1) { on(); }
             else { return; }
         }
     private:
-        
+        int pin;
 };
+
+void everyLED_On (LED* LEDarray, int numLED) {
+    for (int i = 0; i < numLED; i++) {
+        LEDarray[i].on();
+    }
+}
+
+void everyLED_Off (LED* LEDarray, int numLED) {
+    for (int i = 0; i < numLED; i++) {
+        LEDarray[i].off();
+    }
+}
