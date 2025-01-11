@@ -6,7 +6,7 @@
 #include "pitches.h"
 
 constexpr char CODE[4] {'1', '3', '5', '4'};
-
+constexpr int ALARM_INPUT_DELAY {15 * 1000}; //нужное количество секунд * 1 секунда в микросекундах
 LED Builtin_LED(13);
 
 //кнопка - какой контакт + за ввод какого символа отвечает
@@ -51,16 +51,17 @@ void setup() {
 
   myservo.attach(9);
   
-  myservo.delayMode();
-
+  myservo.delayMode(); // сервопривод в режиме задержек, в asyncMode работа может быть нестабильной
+  
 
   Serial.begin(115200);
 }
 
 void loop() {
-
+  
+  
   char inputCode[4] = {};
-  myservo.write(180);
+  myservo.setDegree(180); 
   
   // Ардуино будет ожидать, когда пользователь нажмёт ЧТО-ТО из кнопок
   // нужен механизм, отслеживающий конкретную кнопку
@@ -77,11 +78,11 @@ void loop() {
   // Включение звуковой сигнализации, если она сработала
   if (alarmStatus == 1) {
       Beeper1::alarmPlay();
-      delay(15000);
+      delay(ALARM_INPUT_DELAY); 
   }
 
   // Набор кода 
-
+  
   for (int i = 0; i < 4; i++) {
     inputCode[i] = codeCharSelect(buttonArray, 5);
     ledArray[i].on();
@@ -92,29 +93,33 @@ void loop() {
   if (codeVerify(CODE, inputCode, 4) == 1) {
 
     // СЦЕНАРИЙ, ЕСЛИ КОД ВВЕДЁН ПРАВИЛЬНО
-
+    
+   
     // сброс попыток до трёх обратно
     alarmAttempts = 3;
     // сброс сигнализации
     alarmStatus = 0;
+
     Beeper1::silence(alarmStatus);
 
     Serial.println("Right!!");
 
+    myservo.setDegree(90); //отпирание
+    
     everyLED_On(ledArray, nLeds);
     Beeper1::play(NOTE_F7, alarmStatus);
     delay(200);
     Beeper1::silence(alarmStatus);
 
-    myservo.write(90);
+    
 
     //ожидание нажатия любой кнопки для закрытия
     int awaitingInput1 = awaitForInput(buttonArray, 5);
     Beeper1::playForMs(NOTE_A6, 200, alarmStatus);
-    //запирание
-    everyLED_Off(ledArray, nLeds);
     
-    myservo.write(180);
+    //запирание
+    myservo.setDegree(180);
+    everyLED_Off(ledArray, nLeds);
     //запирание закончилось
 
   }

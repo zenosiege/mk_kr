@@ -102,6 +102,14 @@ public:
     bool attached() {
         return _attached;
     }
+
+    // добавления от студентов группы 233 - "человеческие" методы для общения с сервоприводом
+    void setDegree (int deg){
+
+        write(deg);
+        tick(); // проверяет какое значение угла было занесено в условный буфер и ставит на него сервопривод
+    }
+    // на этом добавления закончились
     
 private:
     void fastWrite(const uint8_t pin, bool val) {
@@ -114,3 +122,4 @@ private:
     bool _attached = 0, _mode = 0, _flag = 0;
     uint32_t _tmr50, _tmrUs;
 };
+
