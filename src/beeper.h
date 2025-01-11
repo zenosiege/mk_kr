@@ -17,17 +17,36 @@ class Beeper {
             digitalWrite(pin, LOW);         
         }
 
+        
         // сделать метод на случай если звук бипера прерывается или наоборот не останавливается
 
-        static void play(int Hertz) {
+        // Пояснение - int Alarmed нужна, чтобы звук бипера не прерывал сигнализацию.
+        // Конечно, никто не мешает поставить отдельный бипер под это дело, но вдруг конструкционные особенности не позволят.
+        static void silence(int Alarmed) {
+            if (Alarmed == 0) {
+                noTone(pin);      
+            }
+        }
+        
+        static void play(int Hertz, int Alarmed) {
             // используем без третьего параметра, ибо это пригодится ещё
             // (третий параметр позволяет использовать tone без прерывания выполнения программы)
-            tone(pin, Hertz);
+            if (Alarmed == 0) {
+                tone(pin, Hertz);
+            }
+            else {};
         }
 
-        static void playForMs(int Hertz, int ms) {
+        static void playForMs(int Hertz, int ms, int Alarmed) {
             // тут уже с третьим параметром
-            tone(pin, Hertz, ms);
+            if (Alarmed == 0) {
+                tone(pin, Hertz, ms);
+            }
+            else {};
+        }
+
+        static void alarmPlay() {
+                tone(pin, 3136, 86400000);
         }
 
         //метод для переключения состояния условиями

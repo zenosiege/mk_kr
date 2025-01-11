@@ -60,7 +60,7 @@ void setup() {
 void loop() {
 
   char inputCode[4] = {};
-  myservo.write(100);
+  myservo.write(180);
   
   // Ардуино будет ожидать, когда пользователь нажмёт ЧТО-ТО из кнопок
   // нужен механизм, отслеживающий конкретную кнопку
@@ -74,17 +74,19 @@ void loop() {
   const int nButtons = 5; //сколько кнопок используется. Для удобства
   BUTTON buttonArray[nButtons] = {Button1, Button2, Button3, Button4, Button5}; 
 
-  // Набор кода
+  // Включение звуковой сигнализации, если она сработала
+  if (alarmStatus == 1) {
+      Beeper1::alarmPlay();
+      delay(15000);
+  }
+
+  // Набор кода 
 
   for (int i = 0; i < 4; i++) {
     inputCode[i] = codeCharSelect(buttonArray, 5);
     ledArray[i].on();
-    
+    Beeper1::playForMs(NOTE_C7, 100, alarmStatus);
   }
-  
-  //
-  everyLED_Off(ledArray, nLeds);
-  delay(500);
 
   
   if (codeVerify(CODE, inputCode, 4) == 1) {
@@ -95,25 +97,24 @@ void loop() {
     alarmAttempts = 3;
     // сброс сигнализации
     alarmStatus = 0;
+    Beeper1::silence(alarmStatus);
 
     Serial.println("Right!!");
 
     everyLED_On(ledArray, nLeds);
+    Beeper1::play(NOTE_F7, alarmStatus);
     delay(200);
-    everyLED_Off(ledArray, nLeds);
-    delay(400);
-    
+    Beeper1::silence(alarmStatus);
+
     myservo.write(90);
 
     //ожидание нажатия любой кнопки для закрытия
     int awaitingInput1 = awaitForInput(buttonArray, 5);
-
+    Beeper1::playForMs(NOTE_A6, 200, alarmStatus);
     //запирание
-    everyLED_On(ledArray, nLeds);
-    delay(200);
     everyLED_Off(ledArray, nLeds);
-    delay(200);
-    myservo.write(0);
+    
+    myservo.write(180);
     //запирание закончилось
 
   }
@@ -121,6 +122,18 @@ void loop() {
 
     // СЦЕНАРИЙ, ЕСЛИ КОД БЫЛ ВВЕДЁН НЕВЕРНО
 
+    
+    Serial.println("WRONG");
+    for (int i = 0; i < 2; i++) {
+      everyLED_On(ledArray, nLeds);
+      Beeper1::play(NOTE_C6, alarmStatus);
+      delay(200);
+
+      everyLED_Off(ledArray, nLeds);
+      Beeper1::silence(alarmStatus);
+      delay(200);
+    }
+    
     // Вычитает попытку
     alarmAttempts -= 1;
 
@@ -129,15 +142,6 @@ void loop() {
       alarmStatus = 1;
     }
 
-    Serial.println("WRONG");
-    for (int i = 0; i < 2; i++) {
-      everyLED_On(ledArray, nLeds);
-      delay(200);
-      everyLED_Off(ledArray, nLeds);
-      delay(200);
-    }
-    
-    
   
   }
   
