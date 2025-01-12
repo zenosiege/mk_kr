@@ -18,12 +18,6 @@ class LED {
             digitalWrite(pin, LOW);         
         }
 
-        //метод для переключения состояния условиями
-        void switchCondition(int status) {
-            if (status == 0) { off(); }
-            else if (status == 1) { on(); }
-            else { return; }
-        }
     private:
         int pin;
 };
