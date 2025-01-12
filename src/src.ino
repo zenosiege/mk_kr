@@ -7,7 +7,6 @@
 
 constexpr char CODE[4] {'1', '3', '5', '4'};
 constexpr int ALARM_INPUT_DELAY {15 * 1000}; //нужное количество секунд * 1 секунда в микросекундах
-LED Builtin_LED(13);
 
 //кнопка - какой контакт + за ввод какого символа отвечает
 BUTTON Button1(6, '1');
@@ -32,7 +31,6 @@ int alarmAttempts = 3; // сколько попыток осталось
 SoftServo myservo;
 
 void setup() {
-  Builtin_LED.init();
 
   Button1.init();
   Button2.init();
