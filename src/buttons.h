@@ -19,14 +19,6 @@ class BUTTON {
             return pin;
         }
 
-        int statusCheck() {
-            if (digitalRead(pin) == 1) {
-                return 0;
-            }
-            else { 
-                return 1;
-            }         
-        }
     private:
         int pin;
         char symbol;

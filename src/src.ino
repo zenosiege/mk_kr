@@ -29,10 +29,8 @@ using Beeper1 = Beeper<11>;
 int alarmStatus = 0; // статус 
 int alarmAttempts = 3; // сколько попыток осталось
 
-//починить серво, переписать код
 SoftServo myservo;
 
-// НЕ ЗАБЫВАЙ НОВЫЕ ОБЪЕКТЫ INIT-ИТЬ
 void setup() {
   Builtin_LED.init();
 

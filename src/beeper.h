@@ -9,15 +9,6 @@ class Beeper {
             pinMode(pin, OUTPUT);
         }
         
-        static void on() {
-            digitalWrite(pin, HIGH);         
-        }
-
-        static void off() {
-            digitalWrite(pin, LOW);         
-        }
-
-        
         // сделать метод на случай если звук бипера прерывается или наоборот не останавливается
 
         // Пояснение - int Alarmed нужна, чтобы звук бипера не прерывал сигнализацию.

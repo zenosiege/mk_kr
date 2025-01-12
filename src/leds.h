@@ -18,12 +18,6 @@ class LED {
             digitalWrite(pin, LOW);         
         }
 
-        void blink(int time_msec) {
-            digitalWrite(pin, HIGH); 
-            delay(time_msec);
-            digitalWrite(pin, LOW); 
-        }
-
         //метод для переключения состояния условиями
         void switchCondition(int status) {
             if (status == 0) { off(); }
