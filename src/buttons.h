@@ -19,8 +19,6 @@ class BUTTON {
             return pin;
         }
 
-        //у Ардуино странная логика - отжатая кнопка возвращается "1", а нажатая "0"
-        //этот метод инвертирует эту логику
         int statusCheck() {
             if (digitalRead(pin) == 1) {
                 return 0;
@@ -49,7 +47,7 @@ int awaitForInput(BUTTON *butArray, unsigned int size) {
        
         for (int i = 0; i < size; i++) {
            
-            if (digitalRead(butArray[i].getPin()) == 0) {
+            if (digitalRead(butArray[i].getPin()) == 1) {
                 fixedArrayVal = i;
                 fixedPin = butArray[i].getPin();
                 awaitQuit = 1;
@@ -68,7 +66,7 @@ int awaitForInput(BUTTON *butArray, unsigned int size) {
     // а вот и превентивный механизм
     // нажатие засчитается ПОСЛЕ отжатой кнопки
     while (preventRepeat != 1) {
-        if (digitalRead(fixedPin) == 1) {
+        if (digitalRead(fixedPin) == 0) {
             preventRepeat = 1;
         }
     }
