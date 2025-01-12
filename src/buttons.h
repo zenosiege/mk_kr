@@ -68,7 +68,7 @@ int awaitForInput(BUTTON *butArray, unsigned int size) {
 }
 
 //смотрит какой символ отдать в зависимости от нажатой кнопки
-int codeCharSelect(BUTTON *butArray, int size) {
+char codeCharSelect(BUTTON *butArray, int size) {
    
    char selected = butArray[awaitForInput(butArray, size)].getSymbol();  
    Serial.println(selected);
