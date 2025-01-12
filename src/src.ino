@@ -23,7 +23,7 @@ LED LED3(4);
 LED LED4(5);
 
 //бипер
-using Beeper1 = Beeper<11>;
+Beeper Beeper1(11);
 
 // переменные сигнализации. Да, глобальная, но иначе в loop она будет сбрасываться
 int alarmStatus = 0; // статус 
@@ -45,7 +45,7 @@ void setup() {
   LED3.init();
   LED4.init();
 
-  Beeper1::init();
+  Beeper1.init();
 
   myservo.attach(9);
   
@@ -75,7 +75,7 @@ void loop() {
 
   // Включение звуковой сигнализации, если она сработала
   if (alarmStatus == 1) {
-      Beeper1::alarmPlay();
+      Beeper1.alarmPlay();
       delay(ALARM_INPUT_DELAY); 
   }
 
@@ -84,7 +84,7 @@ void loop() {
   for (int i = 0; i < 4; i++) {
     inputCode[i] = codeCharSelect(buttonArray, 5);
     ledArray[i].on();
-    Beeper1::playForMs(NOTE_C7, 100, alarmStatus);
+    Beeper1.playForMs(NOTE_C7, 100, alarmStatus);
   }
 
   
@@ -98,22 +98,22 @@ void loop() {
     // сброс сигнализации
     alarmStatus = 0;
 
-    Beeper1::silence(alarmStatus);
+    Beeper1.silence(alarmStatus);
 
     Serial.println("Right!!");
 
     myservo.setDegree(90); //отпирание
     
     everyLED_On(ledArray, nLeds);
-    Beeper1::play(NOTE_F7, alarmStatus);
+    Beeper1.play(NOTE_F7, alarmStatus);
     delay(200);
-    Beeper1::silence(alarmStatus);
+    Beeper1.silence(alarmStatus);
 
     
 
     //ожидание нажатия любой кнопки для закрытия
     int awaitingInput1 = awaitForInput(buttonArray, 5);
-    Beeper1::playForMs(NOTE_A6, 200, alarmStatus);
+    Beeper1.playForMs(NOTE_A6, 200, alarmStatus);
     
     //запирание
     myservo.setDegree(180);
@@ -129,11 +129,11 @@ void loop() {
     Serial.println("WRONG");
     for (int i = 0; i < 2; i++) {
       everyLED_On(ledArray, nLeds);
-      Beeper1::play(NOTE_C6, alarmStatus);
+      Beeper1.play(NOTE_C6, alarmStatus);
       delay(200);
 
       everyLED_Off(ledArray, nLeds);
-      Beeper1::silence(alarmStatus);
+      Beeper1.silence(alarmStatus);
       delay(200);
     }
     
